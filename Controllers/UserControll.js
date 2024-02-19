@@ -120,7 +120,7 @@ exports.forgotpassword=async(req,res)=>{
                 id: user._id
             }, timeExpires)
             console.log(token, user._id)
-            const link = `http://localhost:3000/${user._id}/${token}`
+            const link = `https://mellifluous-zabaione-cd31bd.netlify.app/${user._id}/${token}`
 
             const transporter = nodemailer.createTransport({
                 service: "gmail",

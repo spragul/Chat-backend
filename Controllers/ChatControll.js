@@ -18,7 +18,6 @@ exports.addchart = async (req, res) => {
                 data: data,
                 message: "Chat add Successfull!"
             })
-            console.log(data);
          let a= await UserModel.findByIdAndUpdate({_id:data.userId},{$push:{chatNumber:{name:req.body.name,mobile:req.body.mobile,roomid:req.body.roomid}}});
          let chat1=await UserModel.findOne({_id:data.userId})
          let b=await UserModel.findOneAndUpdate({mobile:req.body.mobile},{$push:{chatNumber:{name:chat1.name,mobile:chat1.mobile,roomid:req.body.roomid}}})

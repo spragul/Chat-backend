@@ -96,7 +96,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://mellifluous-zabaione-cd31bd.netlify.app",
     methods: ["GET", "POST"],
   },
 });
@@ -104,8 +104,6 @@ app.get("/", function (req, res) {
     res.send("<h1>Simple Chat App Server...</h1>");
   });
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
   socket.on("join_room", async(data) => {
     socket.join(data);
     console.log(`User with ID: ${socket.id} joined room: ${data}`);
@@ -115,15 +113,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", async(data) => {
-    console.log(data);
     const userchat=await ChatModel.find({roomid:data.room});
     let b=await ChatModel.findOneAndUpdate({roomid:data.room},{$push:{chat:{author:data.author,message:data.message,time:data.time}}})
-    let receivedata={author:data.author,message:data.message,time:data.time};
-    // const old=await ChatModel.find({roomid:data.room});
-    // console.log(old);
+    let receivedata={author:data.author,message:data.message,time:data.time};;
     socket.to(data.room).emit("receive_message", receivedata);
-
-    // socket.to(data.room).emit("receive_message", data);
   });
 
   socket.on("disconnect", () => {
